@@ -1,9 +1,11 @@
 import numpy as np
 from deck import Deck
-from card import Card
 from gsr import get_cut_position, create_packet, riffle_shuffle
 
-def copy_deck(deck) -> Deck:
+# TODO: add doc strings
+# TODO: write generic functions for each shuffle
+
+def copy_deck(deck) -> Deck: #TODO: move this as a method of the Deck class
     original_cards: Deck = deck.cards.copy()
     deck: Deck = Deck()
     deck.cards = original_cards

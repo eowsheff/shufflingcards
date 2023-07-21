@@ -5,6 +5,8 @@ import randomness_test
 
 import numpy as np
 
+# TODO: add doc strings
+
 
 def riffle_shuffle_simulation(n_experiments: int, n_cards_in_deck: int, max_n_riffle_shuffle:int, random_seed: np.random.seed=None) -> list:
     deck: Deck = Deck().init_new_deck(n_cards_in_deck)
@@ -23,6 +25,7 @@ def riffle_shuffle_simulation(n_experiments: int, n_cards_in_deck: int, max_n_ri
             
             experiment_result.append(riffle_shuffled_pile)
         result.append(experiment_result)
+    
     return result
 
 def a_shuffle_simulation(n_experiments:int, n_cards_in_deck: int, a: int, max_n_shuffle: int, random_seed: np.random.seed=None) -> list:
@@ -31,3 +34,4 @@ def a_shuffle_simulation(n_experiments:int, n_cards_in_deck: int, a: int, max_n_
 
     for i_experiment in range(n_experiments):
         experiment_results: list = []
+        
