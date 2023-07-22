@@ -1,7 +1,7 @@
 import numpy as np
 from deck import Deck
 
-# np.random.seed(0)
+
 def create_packet(cards: Deck) -> Deck:
     packet: Deck = Deck()
     packet.cards = cards
