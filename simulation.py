@@ -1,7 +1,6 @@
 from deck import Deck
 import gsr
 import shuffles
-import randomness_test
 import numpy as np
 
 #TODO: fix setting a random seed per simulation
@@ -73,11 +72,11 @@ def top_in_at_random_shuffle_simulation(n_experiments: int, n_cards_in_deck: int
         experiment_result.append(deck)
         
         while deck[-1] != bottom_card:
-            deck = shuffles._put_top_card_in_random_position(deck)
+            deck = shuffles.top_in_at_random_shuffle(deck)
             experiment_result.append(deck)
         
         # perform one more top in at random move for the bottom card 
-        deck = shuffles._put_top_card_in_random_position(deck)
+        deck = shuffles.top_in_at_random_shuffle(deck)
         experiment_result.append(deck)
         
         result.append(experiment_result)
@@ -92,17 +91,20 @@ def overhand_shuffle_simulation(n_experiments: int, n_cards_in_deck: int, max_n_
     result: list = []
     
     for i_experiment in range(n_experiments):
-        deck: Deck = Deck().init_new_deck(n_cards_in_deck)
+        init_deck: Deck = Deck().init_new_deck(n_cards_in_deck)
 
         experiment_result: list = []
-        experiment_result.append(deck)
+        experiment_result.append(init_deck)
         
         for i_shuffle in range(max_n_shuffle):
-            deck: Deck = shuffles.overhand_shuffle(deck, p=p)
-            experiment_result.append(deck)
+            shuffled_deck: Deck = shuffles.overhand_shuffle(init_deck, p=p)
+            experiment_result.append(shuffled_deck)
+            new_deck: Deck = Deck()
+            new_deck.cards = shuffled_deck.cards
+            init_deck = new_deck
         
         result.append(experiment_result)
-        
+
     return result
         
 

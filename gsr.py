@@ -2,12 +2,6 @@ import numpy as np
 from deck import Deck
 
 
-def create_packet(cards: Deck) -> Deck:
-    packet: Deck = Deck()
-    packet.cards = cards
-    return packet
-
-
 def get_cut_position(deck: Deck, p: float = 0.5) -> np.ndarray:
     """
     Given an instance of Deck, this function returns a cut position, as an index (int), to use to cut the deck of cards.
