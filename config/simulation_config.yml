@@ -2,22 +2,22 @@ simulation_config:
   random_seed: 2023
 
   top_in_at_random_shuffle:
-    n_experiments: 1000
+    n_trials: 100000
     n_cards: 52
   
   riffle_shuffle:
-    n_experiments: 100
+    n_trials: 100000
     n_cards: 52
-    max_riffle_shuffles: 20
+    max_riffle_shuffles: 15
   
   a_shuffle:
-    n_experiments: 100
+    n_trials: 100000
     n_cards: 52
-    max_riffle_shuffles: 20
+    max_riffle_shuffles: 15
     a: 4
   
   overhand_shuffle:
-    n_experiments: 100
+    n_trials: 100000
     n_cards: 52
     max_overhand_shuffles: 5
     p: 0.2
