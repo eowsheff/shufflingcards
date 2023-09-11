@@ -99,6 +99,9 @@ def a_shuffle(deck: Deck, a: int) -> Deck:
 
     return result
 
+def riffle_shuffle(deck):
+    
+    return a_shuffle(deck, a=2)
 
 if __name__ == "__main__":
     number_of_cards_in_deck = 52

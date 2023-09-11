@@ -21,7 +21,7 @@ def riffle_shuffle_simulation(n_trials: int, n_cards_in_deck: int, max_n_riffle_
         # The trial_results holds all the different shuffled Decks of cards. 
         # The first deck in the trial_results is the initial deck, in new standard order.
         trial_result: list = []
-        trial_result.append(deck)
+        # trial_result.append(deck)
         
         # Shuffle the deck n number of times, by cutting the deck into two packets and then riffle shuffling the 
         # two packets together, using the gsr.riffle_shuffle function.

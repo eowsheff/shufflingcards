@@ -36,7 +36,6 @@ class Deck:
         
                 
         :param cards: A deque object holding a sequence of subsequent cards. This simulates the cards in a deck.
-
         :return None
         """
 
@@ -52,9 +51,7 @@ class Deck:
         When calling len(Deck), it will return the number of cards in the self.cards object. This allows the user to easily, and in a Pythonic way, 
         access the number of cards in the Deck.
 
-        
         :param None
-
         :return the length of self.cards as an integer
         """
         return len(self.cards)
@@ -73,7 +70,6 @@ class Deck:
 
 
         :param None
-
         :return repr(self.cards), to show the sequence of cards in self.cards    
         """
         
@@ -97,7 +93,6 @@ class Deck:
 
         
         :param: index: the index, or slice which will slice the self.cards object
-
         :return Deck: a new deck object with the cards that are selected through the user input 
         """
         if isinstance(index, slice):
@@ -197,6 +192,65 @@ class Deck:
         cards = np.array(self.cards)
         inv_order = np.argsort(cards)
         return sum(np.diff(inv_order) < 0) + 1
+    
+
+    def get_rising_sequences(self) -> list:
+        """
+        This method can returns a list of of lists, with the cards in the rising sequences.
+
+        E.g.: if self.cards contains [1,5,6,2,4,3,8,7], this function will return [[1,2,3], [5,6], [4], [8], [7]]
+
+        :param  None
+        return  list of lists containing the cards in each rising sequence in self.cards
+
+        Note for future development: this function can be optimised by implementing a collections.deque object in stead of using lists
+        """
+        rising_sequences = []
+        nums = list(self.cards)
+        current_rising_sequence = [nums[0]]
+        
+        i = 0
+        while i < len(nums) and len(nums) > 1:          
+            for next_r in nums[i+1:]:
+                if next_r - current_rising_sequence[-1] == 1:
+                    index_r = nums.index(next_r)
+                    current_rising_sequence.append(nums.pop(index_r))
+
+            nums = [n for n in nums if n not in current_rising_sequence]
+            rising_sequences.append(current_rising_sequence)
+            if nums:
+                current_rising_sequence = [nums[0]]
+        
+        # if only one item is left, that is a rising sequence on its own
+        if nums:
+            rising_sequences.append(nums)
+        
+        return rising_sequences
+    
+
+    def cut_deck(self, cut_position: int):
+        """
+        Cut the deck in two packets; a top packet and a bottom packet and swap the packets, so the bottom packet is on top, and the top
+        packet is on the bottom.
+
+        E.g.:   d = Deck().init_cards(4)
+                print(d) --> [1,2,3,4]
+                d.cut_deck(2)
+                print(d) --> [3,4,1,2]
+
+        :param  cut_position: the cut position of the deck (as an index)
+        :return self, this function alters self._cards and returns the instance
+        """
+
+        # This can be optimised further. Converting to list and then deque takes O(n) complexity
+        cards: list = list(self._cards)
+        top_packet: list = cards[:cut_position]
+        bottom_packet: list = cards[cut_position:]
+
+        cards_new_order: list = bottom_packet + top_packet
+        self.cards: deque = deque(cards_new_order)
+
+        return self
     
     
     def copy(self):
