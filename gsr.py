@@ -1,9 +1,8 @@
-import math
 import numpy as np
 from deck import Deck
 
 
-def get_cut_position(deck: Deck, p: float = 0.5) -> np.ndarray:
+def get_cut_position(deck: Deck, p: float=0.5) -> np.ndarray:
     """
     Given an instance of Deck, this function returns a cut position, as an index (int), to use to cut the deck of cards.
     The cut position is determined according to the binomial distribution, as described in the paper, with parameter p.
@@ -23,6 +22,7 @@ def get_cut_position(deck: Deck, p: float = 0.5) -> np.ndarray:
 
     :return the index of the cut as an integer.
     """
+
     n: int = len(deck.cards)
     return np.random.binomial(n=n, p=p)
     
@@ -43,6 +43,7 @@ def drop_from_left_stack(n_left: int, n_right: int) -> bool:
 
     :return boolean indicating if a card should be dropped from the packet corresponding to n_left
     """
+
     if n_left > 0 and n_right > 0:
         prob_n_left: float = (n_left) / (n_left + n_right)
         uniform_random: float = np.random.random()
@@ -71,6 +72,7 @@ def riffle_shuffle(left_packet: Deck, right_packet: Deck) -> Deck:
 
     return: pile: a new instance of Deck, which holds Deck.cards with riffle shuffled cards.
     """
+
     n_left: int = len(left_packet)
     n_right: int = len(right_packet)
 

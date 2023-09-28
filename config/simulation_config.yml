@@ -10,14 +10,13 @@ simulation_config:
     n_cards: 52
     max_riffle_shuffles: 15
   
-  a_shuffle:
-    n_trials: 100000
-    n_cards: 52
-    max_riffle_shuffles: 15
-    a: 4
-  
   overhand_shuffle:
-    n_trials: 100000
+    n_trials: 5000
     n_cards: 52
-    max_overhand_shuffles: 5
-    p: 0.2
+    max_overhand_shuffles: 2800
+    p: 0.25
+
+  premo:
+    n_trials: 100000
+    max_riffle_shuffles: 10
+    n_cards: 52

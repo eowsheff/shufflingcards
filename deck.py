@@ -144,11 +144,11 @@ class Deck:
         :param number_of_cards: the number of cards in the deck of cards. In standard order, from low to high
         :return self: this object returns itself. 
         """
-        self.cards = deque(range(1, number_of_cards + 1))
+        self.cards: deque = deque(range(1, number_of_cards + 1))
         return self
     
     @property
-    def cards(self):
+    def cards(self) -> deque:
         """
         Property which returns the attribute self._cards, which holds a sequence of numbers, representing cards in a deck
         Usage: when for an instance of a Deck `d`, d.cards is called, it calls this property and returns self._cards
@@ -160,7 +160,7 @@ class Deck:
     
 
     @cards.setter
-    def cards(self, c):
+    def cards(self, c) -> deque:
         """
         This setter ensures that when a list is assigned to Deck.cards, it is converted to a collections.deque object.
 
@@ -176,7 +176,7 @@ class Deck:
         if isinstance(c, list):
             c = deque(c)
         
-        self._cards = c
+        self._cards: deque = c
 
         return self._cards
 
@@ -189,8 +189,8 @@ class Deck:
         :param  None
         :return number of rising sequences in self._cards, as int 
         """
-        cards = np.array(self.cards)
-        inv_order = np.argsort(cards)
+        cards: np.array = np.array(self.cards)
+        inv_order: np.array = np.argsort(cards)
         return sum(np.diff(inv_order) < 0) + 1
     
 
@@ -205,18 +205,18 @@ class Deck:
 
         Note for future development: this function can be optimised by implementing a collections.deque object in stead of using lists
         """
-        rising_sequences = []
-        nums = list(self.cards)
-        current_rising_sequence = [nums[0]]
+        rising_sequences: list = []
+        nums: list = list(self.cards)
+        current_rising_sequence:list = [nums[0]]
         
-        i = 0
+        i: int = 0
         while i < len(nums) and len(nums) > 1:          
             for next_r in nums[i+1:]:
                 if next_r - current_rising_sequence[-1] == 1:
                     index_r = nums.index(next_r)
                     current_rising_sequence.append(nums.pop(index_r))
 
-            nums = [n for n in nums if n not in current_rising_sequence]
+            nums: list = [n for n in nums if n not in current_rising_sequence]
             rising_sequences.append(current_rising_sequence)
             if nums:
                 current_rising_sequence = [nums[0]]

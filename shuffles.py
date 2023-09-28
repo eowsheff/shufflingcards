@@ -18,62 +18,10 @@ def _create_packet(cards: deque) -> Deck:
     packet.cards = cards
     return packet
 
-def top_in_at_random_shuffle(deck) -> Deck:
-    """
-    This function simulates one move for a top in 'top in at random shuffle'. 
-    That is: it takes the top card and inserts it in a random position of the same deck, but once! 
-    This function should be called multiple times to shuffle a deck properly.
-
-    Following real-life, this function performs the permutations on the cards in the deck on the deck itself. 
-    Because this function performs the shuffle in the same deck it got as a parameter, it does not return a new deck. It will return 
-    the reference to the original deck.
-
-    :param      deck: instance of Deck of cards, holding cards in Deck.cards
-    :return     deck: the same instance as given in param, but with one 'top in at random' permutation performed on the cards
-    """
-    deck = deck.copy()
-    number_of_cards: int = len(deck)
-    # take the top card
-    top_card: int = deck.pop()
-    idx_to_insert_card: int = np.random.randint(0, number_of_cards+1) 
-    # insert the top card to a random position in the deck
-    deck.insert(idx_to_insert_card, top_card)
-    
-    return deck
-
-
-def overhand_shuffle(deck: Deck, p: float=0.2):
-    """
-    
-    """
-
-    # n_cards: int = len(deck) # TODO: check if binomial n should be the cards still in the orginal deck or n_cards
-    pile = Deck() # This pile will represent the shuffled pile of cards
-    
-    while len(deck) > 0:
-        n_cards_still_in_deck: int = len(deck)
-        clump_size: int = np.random.binomial(n=n_cards_still_in_deck, p=p) 
-
-        # TODO: include or exclude - based on using cards_still_in_deck vs n_cards
-        # if clump_size > cards_still_in_deck:
-        #     clump_size = cards_still_in_deck
-        
-        # Create a clump of cards that is added to the new pile of cards
-        # Use slice with positive numbers instead of a slice with negative index for performance
-        clump: Deck = deck[n_cards_still_in_deck-clump_size : n_cards_still_in_deck]
-
-        # remove number of cards in the clump from original deck
-        for c in range(clump_size):
-            deck = deck.copy()
-            deck.pop()
-        
-        # Add clump of cards to the shuffled pile of cards
-        pile.cards.extend(clump.cards)
-        
-    return pile
-    
 
 def a_shuffle(deck: Deck, a: int) -> Deck:
+    
+
     number_of_cuts: int = a-1
     p: float = 1/float(a)
 
@@ -99,9 +47,74 @@ def a_shuffle(deck: Deck, a: int) -> Deck:
 
     return result
 
+
 def riffle_shuffle(deck):
-    
+    """
+    Riffle shuffle is a particular a-shuffle, where a=2. This function calls the a-shuffle function with a=2.
+    It returns a once riffle shuffled deck.
+
+    :param      deck: instance of Deck of cards, holding cards in Deck.cards
+    :return     deck object, a new instance of deck, containing the cards after one riffle shuffle
+    """
     return a_shuffle(deck, a=2)
+
+
+def top_in_at_random_shuffle(deck) -> Deck:
+    """
+    This function simulates one move for a top in 'top in at random shuffle'. 
+    That is: it takes the top card and inserts it in a random position of the same deck, but once! 
+    This function should be called multiple times to shuffle a deck properly.
+
+    Following real-life, this function performs the permutations on the cards in the deck on the deck itself. 
+    Because this function performs the shuffle in the same deck it got as a parameter, it does not return a new deck. It will return 
+    the reference to the original deck.
+
+    :param      deck: instance of Deck of cards, holding cards in Deck.cards
+    :return     deck: the same instance as given in param, but with one 'top in at random' permutation performed on the cards
+    """
+    deck = deck
+    number_of_cards: int = len(deck)
+    # take the top card
+    top_card: int = deck.popleft()
+    
+    idx_to_insert_card: int = np.random.randint(low=0, high=number_of_cards) 
+    # insert the top card to a random position in the deck
+    deck.insert(idx_to_insert_card, top_card)
+    
+    return deck
+
+
+def overhand_shuffle(deck: Deck, p: float=0.2):
+    """
+    In this function, one overhand shuffle is performed. Given a deck of cards, clumps according to the binomial distirbution are created.
+    Each clump is then added to a new pile. Where the clump of cards initially on top, ends up on the bottom of the new deck.
+
+    :param      deck: instance of Deck of cards, holding cards in Deck.cards
+    :return     pile: a new instance of deck, containing the cards after one overhand shuffle
+    """
+    pile = Deck() # This pile will represent the shuffled pile of cards
+    
+    deck = deck.copy()
+    cards_in_deck = len(deck)
+    
+    while cards_in_deck > 0:
+        n_cards_still_in_deck: int = len(deck)
+        clump_size: int = np.random.binomial(n=n_cards_still_in_deck, p=p)
+        if clump_size > 0:            
+            # Create a clump of cards that is added to the new pile of cards
+            # Use slice with positive numbers instead of a slice with negative index for performance
+            clump: Deck = deck[:clump_size].copy()
+            clump.reverse() # reverse the elements in the clump, `extendleft()` will re-reverse the elements as intended
+            pile.cards.extendleft(clump)
+            cards_in_deck -= clump_size
+
+            # remove number of cards in the clump from original deck
+            for c in range(clump_size):
+                # deck = deck.copy() #TODO: check performance for copying the deck for each card
+                deck.popleft() 
+    
+    return pile
+    
 
 if __name__ == "__main__":
     number_of_cards_in_deck = 52
